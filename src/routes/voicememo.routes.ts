@@ -14,7 +14,7 @@ const uploadMiddleWare = multer({
 });
 
 export default Router()
-  .get("/", voicememoController.GetAll)
+  .post("/getall", voicememoController.GetAll)
   .post(
     "/",
     uploadMiddleWare.single("file"),

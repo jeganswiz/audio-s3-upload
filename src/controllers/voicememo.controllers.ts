@@ -5,7 +5,7 @@ import { deleteFile, getFileURL, uploadFile } from "../helpers";
 const GetAll: RequestHandler = async (req, res) => {
   try {
     let voicememos = [];
-    const voicememosWithOutURL:any = await Voicememo.find({}).lean();
+    const voicememosWithOutURL:any = await Voicememo.find({ userId:req.body.userId }).sort({_id:-1}).lean();
     for (const voicememo of voicememosWithOutURL) {
       const file = await getFileURL(voicememo.file);
       voicememos.push({ ...voicememo, file });
@@ -40,6 +40,7 @@ const Create: RequestHandler = async (req, res) => {
     const voicememo = await new Voicememo({
       notes: req.body.notes,
       file: voiceFileName,
+      userId: req.body.userId
     }).save();
     res.status(201).json({
       msg: "Created Successfully",

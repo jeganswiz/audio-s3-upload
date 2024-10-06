@@ -5,6 +5,7 @@ import http from "http";
 import https from "https";
 import mongoose from "mongoose";
 import configs from "../configs";
+import voiceMemoRoutes from '../routes/voicememo.routes';
 
 export function setupServer(app: Express) {
   let server;
@@ -27,13 +28,5 @@ export function setupDatabase() {
 }
 
 export function setupRoutes(app: Express) {
-  readdir("src/routes", (err, files) => {
-    if (err) throw err;
-    files.forEach(async (filename) => {
-      const route = filename.split(".")[0];
-      const path = `../routes/${filename}`;
-      const router = await import(path);
-      app.use(`/api/v1/${route}`, router.default);
-    });
-  });
+  app.use(`/api/v1/voicememo/`, voiceMemoRoutes);
 }
